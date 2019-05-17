@@ -15,7 +15,7 @@
 
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
-		<param-value>/WEB-INF/applicationContext.xml</param-value>
+		<param-value>classpath:applicationContext.xml</param-value> <!-- 클래스 패스에서 찾는다. 클래스 패스는 src/main/resource가 기본 설정에 deployment assembly에서 classes폴어가 src/main/resources에 있기 때문? -->
 	</context-param>
 
 
@@ -60,4 +60,13 @@
 		<url-pattern>/</url-pattern>
 	</servlet-mapping>
 
+	<!-- 공통 에러 페이지 -->
+	<error-page>
+		<error-code>404</error-code>
+		<location>/WEB-INF/views/error/404.jsp</location>
+	</error-page>
+	<error-page>
+		<error-code>500</error-code>
+		<location>/WEB-INF/views/error/500.jsp</location>
+	</error-page>
 </web-app>

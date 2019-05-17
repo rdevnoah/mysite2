@@ -1,13 +1,15 @@
 package com.cafe24.mysite.repository;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.sql.DataSource;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.cafe24.mysite.vo.GuestbookVo;
@@ -16,6 +18,8 @@ import com.cafe24.mysite.vo.GuestbookVo;
 @Repository
 public class GuestbookDao {
 	
+	@Autowired
+	private DataSource dataSource;
 	
 	public Boolean insert(GuestbookVo vo) {
 		boolean result = false;
@@ -24,7 +28,7 @@ public class GuestbookDao {
 		PreparedStatement pstmt = null;
 		try {
 
-			conn = getConnection();
+			conn = dataSource.getConnection();
 
 			String sql = "insert into guestbook values(null, ?, ?, ?, now())";
 			pstmt = conn.prepareStatement(sql);
@@ -63,7 +67,7 @@ public class GuestbookDao {
 		PreparedStatement pstmt = null;
 		try {
 
-			conn = getConnection();
+			conn = dataSource.getConnection();
 
 			String sql = "delete from guestbook where no=? and password=?";
 			pstmt = conn.prepareStatement(sql);
@@ -103,7 +107,7 @@ public class GuestbookDao {
 		Connection conn = null;
 		try {
 
-			conn = getConnection();
+			conn = dataSource.getConnection();
 			String sql = "select no, name, contents, date_format(reg_date, '%Y-%m-%d %h:%i:%s') " + 
 					"from guestbook " + 
 					"order by reg_date desc";
@@ -149,20 +153,5 @@ public class GuestbookDao {
 	}
 	
 	
-	private Connection getConnection() throws SQLException {
-		Connection conn = null;
-
-		try {
-
-			Class.forName("org.mariadb.jdbc.Driver");
-			String url = "jdbc:mariadb://192.168.1.25:3307/webdb";
-			conn = DriverManager.getConnection(url, "webdb", "dkfkqptmzm1!");
-
-		} catch (ClassNotFoundException e) {
-			System.out.println("드라이버 로딩 실패 : " + e);
-		}
-
-		return conn;
-
-	}
+	
 }

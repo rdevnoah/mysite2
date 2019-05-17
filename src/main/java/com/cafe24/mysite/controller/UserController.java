@@ -87,21 +87,17 @@ public class UserController {
 
 	@RequestMapping(value = "/update", method = RequestMethod.POST)
 	public String update(HttpSession session, @ModelAttribute UserVo vo, Model model) {
-		UserVo userVo = new UserVo();
 
-		userVo.setNo(vo.getNo());
-		userVo.setName(vo.getName());
-		userVo.setEmail(vo.getEmail());
-		userVo.setPassword(vo.getPassword());
-		userVo.setGender(vo.getGender());
-
-		UserVo updatedUser = userService.updateUser(userVo);
-
-		if (updatedUser == null) {
+		if (session == null) {
+			return "/";
+		}
+		
+		if (vo == null) {
 			model.addAttribute("result", "fail");
 			return "/user/login"; // 보내고 나면 무조건 코드를 끝을 내줘야 한다. 아니면 밑으로 내려가서 밑의 코드가 수행된다.
-
 		}
+		
+		UserVo updatedUser = userService.updateUser(vo);
 		session.setAttribute("authUser", updatedUser);
 
 		return "redirect:/user/updatesuccess";
@@ -112,5 +108,8 @@ public class UserController {
 	public String updateSuccess() {
 		return "user/updatesuccess";
 	}
+	
+	
+
 
 }

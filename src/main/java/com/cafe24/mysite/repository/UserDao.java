@@ -1,19 +1,24 @@
 package com.cafe24.mysite.repository;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import javax.sql.DataSource;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.cafe24.mysite.exception.UserDaoException;
 import com.cafe24.mysite.vo.UserVo;
 
 
 @Repository
 public class UserDao {
 	
+	@Autowired
+	private DataSource dataSource;
 
 	public UserVo update(UserVo vo) {
 		UserVo result = null;
@@ -22,7 +27,7 @@ public class UserDao {
 		PreparedStatement pstmt = null;
 		try {
 
-			conn = getConnection();
+			conn = dataSource.getConnection();
 
 			String sql = "update user set name=?, gender=? where no=?";
 			pstmt = conn.prepareStatement(sql);
@@ -36,7 +41,7 @@ public class UserDao {
 			result = vo;
 
 		} catch (SQLException e) {
-			System.out.println("error" + e);
+			throw new UserDaoException(e);
 		} finally {
 			try {
 				if (pstmt != null) {
@@ -63,7 +68,7 @@ public class UserDao {
 		
 		try {
 
-			conn = getConnection();
+			conn = dataSource.getConnection();
 			String sql = "select no, name, email, gender from user where no=?";
 
 			pstmt = conn.prepareStatement(sql);
@@ -87,7 +92,7 @@ public class UserDao {
 			}
 
 		} catch (SQLException e) {
-			System.out.println("error" + e);
+			System.out.println("error : " + e);
 		} finally {
 			try {
 				if (rs != null) {
@@ -108,7 +113,7 @@ public class UserDao {
 		
 	}
 	
-	public UserVo get(UserVo userVo) {
+	public UserVo get(UserVo userVo) throws UserDaoException {
 		UserVo result = null;
 
 		PreparedStatement pstmt = null;
@@ -117,7 +122,7 @@ public class UserDao {
 		
 		try {
 
-			conn = getConnection();
+			conn = dataSource.getConnection();
 			String sql = "select no, name from user where email=? and password=?";
 
 			pstmt = conn.prepareStatement(sql);
@@ -137,7 +142,7 @@ public class UserDao {
 			}
 
 		} catch (SQLException e) {
-			System.out.println("error" + e);
+			throw new UserDaoException(e);
 		} finally {
 			try {
 				if (rs != null) {
@@ -165,7 +170,7 @@ public class UserDao {
 		PreparedStatement pstmt = null;
 		try {
 
-			conn = getConnection();
+			conn = dataSource.getConnection();
 
 			String sql = "insert into user values(null, ?, ?, ?, ?, now())";
 			pstmt = conn.prepareStatement(sql);
@@ -196,25 +201,6 @@ public class UserDao {
 
 		return result;
 	}
-	
-	private Connection getConnection() throws SQLException {
-		Connection conn = null;
-
-		try {
-
-			Class.forName("org.mariadb.jdbc.Driver");
-			String url = "jdbc:mariadb://192.168.1.25:3307/webdb";
-			conn = DriverManager.getConnection(url, "webdb", "dkfkqptmzm1!");
-
-		} catch (ClassNotFoundException e) {
-			System.out.println("드라이버 로딩 실패 : " + e);
-		}
-
-		return conn;
-
-	}
-
-	
 	
 	
 	

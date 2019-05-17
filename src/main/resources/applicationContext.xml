@@ -22,6 +22,14 @@
 		<context:include-filter type="annotation"
 			expression="org.springframework.stereotype.Component" />			
 	</context:component-scan>
+	
+	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
+		<property name="driverClassName" value="org.mariadb.jdbc.Driver" />
+		<property name="url" value="jdbc:mariadb://192.168.1.25:3307/webdb" />
+		<property name="username" value="webdb" />
+		<property name="password" value="dkfkqptmzm1!" />
+	</bean>
+	
 
 
 </beans>
