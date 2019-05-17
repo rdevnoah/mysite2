@@ -18,12 +18,12 @@ public class GuestbookService {
 		return guestbookDao.getList();
 	}
 
-	public boolean insert(GuestbookVo vo) {
+	public boolean writeContents(GuestbookVo vo) {
 		return guestbookDao.insert(vo);
 		
 	}
 
-	public boolean delete(GuestbookVo vo) {
+	public boolean deleteContents(GuestbookVo vo) {
 		return guestbookDao.delete(vo);
 		
 	}

@@ -29,7 +29,7 @@ public class GuestbookController {
 	
 	@RequestMapping(value = "/add", method=RequestMethod.POST)
 	public String add(@ModelAttribute GuestbookVo vo) {
-		guestbookService.insert(vo);
+		guestbookService.writeContents(vo);
 		return "redirect:/guestbook";
 	}
 	
@@ -41,7 +41,7 @@ public class GuestbookController {
 	
 	@RequestMapping(value="/delete", method=RequestMethod.POST)
 	public String delete(@ModelAttribute GuestbookVo vo) {
-		guestbookService.delete(vo);
+		guestbookService.deleteContents(vo);
 		return "redirect:/guestbook";
 	}
 	
