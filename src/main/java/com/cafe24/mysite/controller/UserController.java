@@ -62,6 +62,10 @@ public class UserController {
 
 	@RequestMapping("/logout")
 	public String logout(HttpSession session) {
+		UserVo authUser = (UserVo)session.getAttribute("authUser");
+		if (authUser == null || session == null) {
+			return "user/login";
+		}
 		session.removeAttribute("authUser");
 		session.invalidate();
 		return "redirect:/";
@@ -80,7 +84,6 @@ public class UserController {
 		}
 
 		UserVo userVo = userService.getUser(authUser.getNo());
-		System.out.println(userVo);
 		model.addAttribute("userVo", userVo);
 		return "/user/update";
 	}
@@ -97,7 +100,7 @@ public class UserController {
 			return "/user/login"; // 보내고 나면 무조건 코드를 끝을 내줘야 한다. 아니면 밑으로 내려가서 밑의 코드가 수행된다.
 		}
 		
-		UserVo updatedUser = userService.updateUser(vo);
+		UserVo updatedUser = userService.updateUserInfo(vo);
 		session.setAttribute("authUser", updatedUser);
 
 		return "redirect:/user/updatesuccess";

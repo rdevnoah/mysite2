@@ -26,7 +26,7 @@ public class UserService {
 		return userDao.get(userNo);
 	}
 
-	public UserVo updateUser(UserVo vo) {
+	public UserVo updateUserInfo(UserVo vo) {
 		return userDao.update(vo);
 	}
 }

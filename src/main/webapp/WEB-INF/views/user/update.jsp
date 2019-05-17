@@ -23,9 +23,7 @@
 					<input id="name" name="name" type="text" value="${userVo.name }">
 
 					<label class="block-label" for="email">이메일</label>
-					<input id="email" name="email" type="text" value="${userVo.email }" readonly="readonly">
-					<input type="button" value="id 중복체크">
-					
+					<input id="email" name="email" type="text" value="${userVo.email }" readonly="readonly" disabled="disabled">
 					<label class="block-label">패스워드</label>
 					<input name="password" type="password" value="">
 					
