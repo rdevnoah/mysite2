@@ -11,6 +11,11 @@ public class UserService {
 	
 	@Autowired
 	private UserDao userDao;
+	
+	public boolean existEmail(String email) {
+		UserVo userVo = userDao.get(email);
+		return userVo != null;
+	}
 
 	public boolean join(UserVo vo) {
 		boolean result=false;
@@ -29,4 +34,5 @@ public class UserService {
 	public UserVo updateUserInfo(UserVo vo) {
 		return userDao.update(vo);
 	}
+
 }

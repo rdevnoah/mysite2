@@ -34,4 +34,8 @@ public class UserDao {
 		return count==1;
 	}
 
+	public UserVo get(String email) {
+		return sqlSession.selectOne("user.getByEmail", email);
+	}
+
 }

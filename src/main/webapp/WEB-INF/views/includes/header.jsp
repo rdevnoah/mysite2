@@ -4,8 +4,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>  
 	
-<%@page import="com.cafe24.mysite.vo.UserVo"%>
-	
 <div id="header">
 	<h1>MySite</h1>
 	<ul>
