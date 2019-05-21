@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="board">
+	<select id="pageList" parameterType="pagingBean" resultType="boardvo">
+	<![CDATA[
+		select b.no, b.title, u.name, date_format(b.reg_date, '%Y-%m-%d %h:%i:%s') as regDate, 
+		b.hit, b.group_no as groupNo, b.order_no as orderNo, b.depth
+		from board b, user u
+		where b.user_no=u.no 
+		order by b.group_no desc, b.no asc limit #{startRowNumber }, #{postCountPerPage }
+	]]>
+	
+	</select>
+	<select id="getDetail" parameterType="long" resultType="boardvo">
+	<![CDATA[
+		select no, title, contents 
+		from board
+		where no=#{no }
+	]]>
+	</select>	
+	<select id="count" resultType="int">
+	<![CDATA[
+		select count(*) from board
+	]]>
+	</select>
+
+	<select id="list" resultType="boardvo">
+	<![CDATA[
+		select no, title, contents, hit, 
+		date_format(reg_date, '%Y-%m-%d %h:%i:%s') as regDate, 
+		group_no as groupNo, order_no as orderNo,
+		depth, 
+		user_no as userNo
+		from board 
+		order by no desc
+		
+	]]>
+	</select>
+	
+	<insert id="insert" parameterType="boardvo">
+   	<![CDATA[
+		insert into board 
+		values(null, #{title }, #{contents }, #{hit }, now(), 
+				#{groupNo }, #{orderNo }, #{depth }, #{userNo })
+	]]>
+  	</insert>
+  	
+  	
+  	<!-- 글의 userNo와  -->
+  	<delete id="delete" parameterType="boardvo"> 
+  	<![CDATA[
+		delete from board where no=#{no }
+	]]>
+  	</delete>
+</mapper>
