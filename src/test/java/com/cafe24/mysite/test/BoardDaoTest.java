@@ -2,7 +2,6 @@ package com.cafe24.mysite.test;
 
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
 
 import java.util.List;
 
@@ -16,19 +15,20 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.cafe24.mysite.repository.BoardDao;
 import com.cafe24.mysite.vo.BoardVo;
+import com.cafe24.mysite.vo.PagingBean;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "file:src/main/resources/applicationContext.xml" })
+@ContextConfiguration(locations = { "file:src/main/resources/applicationContext.xml" }) //root wac에 저장된 bean들 사용
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class BoardDaoTest {
 
 	@Autowired
 	private BoardDao boardDao;
 
-	// @Test // DAO : add and getlist Test
+	@Test // DAO : 단순 add test
 	public void test01() {
-		System.out.println("success1");
-
+		boardDao.deleteAll();
+		assertThat(boardDao.getCount(),is(0));
 		BoardVo vo = new BoardVo();
 		vo.setTitle("저녁?");
 		vo.setContents("오늘 저녁 뭐 드실래요?");
@@ -37,41 +37,52 @@ public class BoardDaoTest {
 		vo.setOrderNo(1);
 		vo.setDepth(0);
 		vo.setUserNo(2L);
-		if (boardDao.insert(vo) == false) {
-			System.out.println("insert fail");
-			return;
-		}
+		assertThat(boardDao.insert(vo),is(true));
+		assertThat(boardDao.getCount(),is(1));
 
-		List<BoardVo> list = boardDao.getList();
-		for (BoardVo getVo : list) {
-			System.out.println(getVo);
-		}
 	}
 
-	// @Test // DAO : delete test
+	@Test // DAO : getPageListTest
 	public void test02() {
-		BoardVo vo = new BoardVo();
-		vo.setNo(2L);
-		assertTrue(boardDao.delete(vo));
-
-		List<BoardVo> list = boardDao.getList();
-		for (BoardVo getVo : list) {
-			System.out.println(getVo);
-		}
+		assertThat(boardDao.deleteAll(), is(true));
+		assertThat(boardDao.getCount(),is(0));
+		BoardVo vo1 = new BoardVo("1", "1234", 2L);
+		BoardVo vo2 = new BoardVo("2", "1234", 2L);
+		BoardVo vo3 = new BoardVo("3", "1234", 2L);
+		BoardVo vo4 = new BoardVo("4", "1234", 2L);
+		BoardVo vo5 = new BoardVo("5", "1234", 2L);
+		
+		assertThat(boardDao.insert(vo1), is(true));
+		assertThat(boardDao.insert(vo2), is(true));
+		assertThat(boardDao.insert(vo3), is(true));
+		assertThat(boardDao.insert(vo4), is(true));
+		assertThat(boardDao.insert(vo5), is(true));
+		int count = boardDao.getCount();
+		assertThat(count, is(5));
+		
+		PagingBean pb = new PagingBean(count, 1);
+		List<BoardVo> list = boardDao.getList(pb);
+		
+		assertThat(count, is(list.size()));
+		
+		assertThat(checkContain(list, vo1), is(true));
+		assertThat(checkContain(list, vo2), is(true));
+		assertThat(checkContain(list, vo3), is(true));
+		assertThat(checkContain(list, vo4), is(true));
+		assertThat(checkContain(list, vo5), is(true));
+		assertThat(checkContain(list, new BoardVo()), is(not(true)));
 	}
 
-	@Test// getCount and set Pagingbean
-	public void test03() {
-		/*
-		 * int count = boardDao.getCount(); PagingBean pb = new PagingBean(count, 1);
-		 * System.out.println("sssssssssss" + pb.getStartRowNumber());
-		 * System.out.println("eeeeeeeeeee" + pb.getEndRowNumber()); List<BoardVo> list
-		 * = boardDao.getList(pb); // System.out.println("!#!@#!@#!@# "+list.size());
-		 * for (BoardVo vo : list) { System.out.println(vo); }
-		 */
-		assertThat(boardDao.getCount(), is(7));
-	}
 	
+	
+	public boolean checkContain(List<BoardVo> dbList, BoardVo vo) {
+		for (BoardVo db : dbList) {
+			if (db.getTitle().equals(vo.getTitle())){
+				return true;
+			}
+		}
+		return false;
+	}
 	
 
 }

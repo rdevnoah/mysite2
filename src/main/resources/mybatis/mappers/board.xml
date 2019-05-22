@@ -37,20 +37,24 @@
 		
 	]]>
 	</select>
-	
-	<insert id="insert" parameterType="boardvo">
+
+  	<insert id="insert" parameterType="boardvo">
    	<![CDATA[
 		insert into board 
-		values(null, #{title }, #{contents }, #{hit }, now(), 
-				#{groupNo }, #{orderNo }, #{depth }, #{userNo })
+		select null, #{title }, #{contents }, 0, now(), COALESCE(max(group_no+1), 1), 1, 0, #{userNo } from board
 	]]>
   	</insert>
-  	
   	
   	<!-- 글의 userNo와  -->
   	<delete id="delete" parameterType="boardvo"> 
   	<![CDATA[
 		delete from board where no=#{no }
+	]]>
+  	</delete>
+  	
+  	<delete id="deleteAll"> 
+  	<![CDATA[
+		delete from board
 	]]>
   	</delete>
 </mapper>

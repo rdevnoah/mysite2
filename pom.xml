@@ -16,10 +16,6 @@
 		<!-- <jcloverslf4j.version>1.7.6</jcloverslf4j.version> <logback.version>1.1.1</logback.version> -->
 	</properties>
 
-
-
-
-
 	<dependencies>
 		<!-- Spring core -->
 		<dependency>
@@ -136,8 +132,17 @@
 			<version>${org.springframework-version}</version>
 		</dependency>
 
-
-
+		<!-- validation & Hibernate Validator-->
+		<dependency>
+			<groupId>javax.validation</groupId>
+			<artifactId>validation-api</artifactId>
+			<version>1.0.0.GA</version>
+		</dependency>
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-validator</artifactId>
+			<version>4.2.0.Final</version>
+		</dependency>
 
 	</dependencies>
 

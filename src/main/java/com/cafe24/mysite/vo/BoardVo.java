@@ -12,6 +12,29 @@ public class BoardVo {
 	private Long userNo;
 	private String regDate;
 	private String name; // user name
+	
+	public BoardVo() {}
+	
+	
+	
+	public BoardVo(String title, String contents, Long userNo) {
+		this.title = title;
+		this.contents = contents;
+		this.userNo = userNo;
+	}
+
+
+
+	public BoardVo(String title, String contents, int hit, int groupNo, 
+			int orderNo, int depth, Long userNo) {
+		this.title = title;
+		this.contents = contents;
+		this.hit = hit;
+		this.groupNo = groupNo;
+		this.orderNo = orderNo;
+		this.depth = depth;
+		this.userNo = userNo;
+	}
 	public Long getNo() {
 		return no;
 	}

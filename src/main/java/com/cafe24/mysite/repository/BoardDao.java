@@ -28,6 +28,10 @@ public class BoardDao {
 		return sqlSession.delete("board.delete", vo)==1;
 	}
 	
+	public Boolean deleteAll() {
+		return sqlSession.delete("board.deleteAll") == 1;
+	}
+	
 	public int getCount() {
 		return sqlSession.selectOne("board.count");
 	}

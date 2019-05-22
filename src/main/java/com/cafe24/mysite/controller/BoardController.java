@@ -1,14 +1,20 @@
 package com.cafe24.mysite.controller;
 
+import javax.servlet.http.HttpSession;
+import javax.swing.text.html.FormSubmitEvent.MethodType;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.cafe24.mysite.service.BoardService;
 import com.cafe24.mysite.vo.BoardListVo;
 import com.cafe24.mysite.vo.BoardVo;
+import com.cafe24.mysite.vo.UserVo;
 
 @Controller
 @RequestMapping("/board")
@@ -32,5 +38,25 @@ public class BoardController {
 		BoardVo vo = boardService.getViewByNo(no);
 		model.addAttribute("board", vo);
 		return "board/view";
+	}
+	
+	@RequestMapping("/write")
+	public String write(HttpSession session) {
+		UserVo authUser = (UserVo)session.getAttribute("authUser");
+		if (authUser == null || session == null) {
+			return "user/login";
+		}
+		return "board/write";
+	}
+	
+	@RequestMapping(value="/write", method = RequestMethod.POST)
+	public String write(@RequestParam(value="authNo", required=true, defaultValue = "")String authNo,
+			@ModelAttribute BoardVo vo) {
+		if ("".equals(authNo)) {
+			return "user/login";
+		}
+		vo.setNo(Long.parseLong(authNo));
+		boardService.writeByAuthUser(vo);
+		return "redirect:/board";
 	}
 }

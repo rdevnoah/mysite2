@@ -29,4 +29,9 @@ public class BoardService {
 		return boardDao.get(Long.parseLong(no));
 	}
 
+	public Boolean writeByAuthUser(BoardVo vo) {
+		return boardDao.insert(vo);
+		
+	}
+
 }
