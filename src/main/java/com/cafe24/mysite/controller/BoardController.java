@@ -20,8 +20,10 @@ public class BoardController {
 	@RequestMapping("")
 	public String list(Model model, @RequestParam(value="nowPage", required = true, defaultValue = "1") String nowPage) {
 		
+		System.out.println("nowPage : "+nowPage);
 		BoardListVo pageList = boardService.getPageListByPageNum(nowPage);
 		model.addAttribute("pageList",pageList);
+		
 		return "board/list";
 	}
 	

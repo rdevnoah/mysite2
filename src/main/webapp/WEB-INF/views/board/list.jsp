@@ -58,13 +58,12 @@
 									<li>${i }</li>
 								</c:when>
 								<c:otherwise>
-									<li><a href="${pageContext.servletContext.contextPath }">${i }</a></li>
+									<li><a href="${pageContext.servletContext.contextPath }/board?nowPage=${i }">${i }</a></li>
 								</c:otherwise>
 							</c:choose>
 						</c:forEach>
 						<c:if test="${pageList.pb.nextPageGroup==true }">
-							<li><a
-								href="${pageContext.servletContext.contextPath }/board?nowPage=${pageList.pb.endPageOfPageGroup+1 }">▶</a></li>
+							<li><a href="${pageContext.servletContext.contextPath }/board?nowPage=${pageList.pb.endPageOfPageGroup+1 }">▶</a></li>
 						</c:if>
 					</ul>
 				</div>

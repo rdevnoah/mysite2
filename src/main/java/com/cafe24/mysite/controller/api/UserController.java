@@ -16,7 +16,7 @@ public class UserController {
 	@Autowired
 	private UserService userService;
 	
-	
+	@ResponseBody
 	@RequestMapping("/checkemail")
 	public JSONResult checkEmail(@RequestParam(value="email", required = true, defaultValue="") String email) {
 		Boolean exist = userService.existEmail(email);
