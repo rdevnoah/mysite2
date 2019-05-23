@@ -51,4 +51,13 @@ public class BoardDao {
 	public int update(BoardVo vo) {
 		return sqlSession.update("board.update", vo);
 	}
+
+	public int updateOthers(BoardVo vo) {
+		return sqlSession.update("board.updateOthers", vo);
+		
+	}
+
+	public boolean insertRe(BoardVo vo) {
+		return sqlSession.insert("insertRe", vo) == 1;
+	}
 }

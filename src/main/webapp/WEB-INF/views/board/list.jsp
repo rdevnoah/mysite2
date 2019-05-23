@@ -32,7 +32,7 @@
 					<c:forEach items="${pageList.list}" var="board">
 						<tr>
 							<td>${board.no}</td>
-							<td style='text-align: left; padding-left:${20*board.depth }px'>
+							<td style='text-align: left; padding-left:${10*board.depth }px'>
 								<c:if test="${board.depth != 0 }">
 									<img src="${pageContext.servletContext.contextPath }/assets/images/reply.png">
 								</c:if> 

@@ -104,6 +104,55 @@ public class BoardDaoTest {
 		assertThat(boardDao.get(no).getTitle(), is(updateVo.getTitle()));
 	}
 	
+	//@Test // DAO : insert reply test
+	public void test05() {
+		
+		// title, contents, 부모groupNo, 부모orderNo, 자기userNo
+		BoardVo vo1 = new BoardVo("답글1", "답글입니다.", 2, 1, 3L);
+		BoardVo vo2 = new BoardVo("답글2", "답글입니다.", 2, 2, 3L);
+		BoardVo vo3 = new BoardVo("답글3", "답글입니다.", 2, 3, 3L);
+		BoardVo vo4 = new BoardVo("답글4", "답글입니다.", 2, 4, 3L);
+		BoardVo vo5 = new BoardVo("답글5", "답글입니다.", 2, 5, 3L);
+		BoardVo vo6 = new BoardVo("답글6", "답글입니다.", 2, 6, 3L);
+		BoardVo vo7 = new BoardVo("답글7", "답글입니다.", 2, 7, 3L);
+		BoardVo vo8 = new BoardVo("답글8", "답글입니다.", 2, 3, 3L);
+		BoardVo vo9 = new BoardVo("답글9", "답글입니다.", 2, 3, 3L);
+		BoardVo vo10 = new BoardVo("답글10", "답글입니다.", 2, 3, 3L);
+		BoardVo vo11 = new BoardVo("답글11", "답글입니다.", 2, 4, 3L);
+		BoardVo vo12 = new BoardVo("답글12", "답글입니다.", 2, 4, 3L);
+		BoardVo vo13 = new BoardVo("답글13", "답글입니다.", 2, 5, 3L);
+		
+		boardDao.updateOthers(vo1);
+		boardDao.insertRe(vo1);
+		boardDao.updateOthers(vo2);
+		boardDao.insertRe(vo2);
+		boardDao.updateOthers(vo3);
+		boardDao.insertRe(vo3);
+		boardDao.updateOthers(vo4);
+		boardDao.insertRe(vo4);
+		boardDao.updateOthers(vo5);
+		boardDao.insertRe(vo5);
+		boardDao.updateOthers(vo6);
+		boardDao.insertRe(vo6);
+		boardDao.updateOthers(vo7);
+		boardDao.insertRe(vo7);
+		boardDao.updateOthers(vo8);
+		boardDao.insertRe(vo8);
+		boardDao.updateOthers(vo9);
+		boardDao.insertRe(vo9);
+		boardDao.updateOthers(vo10);
+		boardDao.insertRe(vo10);
+		boardDao.updateOthers(vo11);
+		boardDao.insertRe(vo11);
+		boardDao.updateOthers(vo12);
+		boardDao.insertRe(vo12);
+		boardDao.updateOthers(vo13);
+		boardDao.insertRe(vo13);
+		assertThat(boardDao.getCount(), is(18));
+		
+		
+	}
+	
 	public boolean checkContain(List<BoardVo> dbList, BoardVo vo) {
 		
 		for (BoardVo db : dbList) {

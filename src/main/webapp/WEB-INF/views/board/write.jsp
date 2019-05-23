@@ -35,6 +35,9 @@
 					<div class="bottom">
 						<a href="${pageContext.servletContext.contextPath }/board">취소</a>
 						<input type="submit" value="등록">
+						<c:if test="${not empty no }">
+							<input type="hidden" name="no" value="${no }">
+						</c:if>
 					</div>
 				</form>				
 			</div>

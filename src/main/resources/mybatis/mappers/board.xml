@@ -14,7 +14,7 @@
 	</select>
 	<select id="getDetail" parameterType="long" resultType="boardvo">
 	<![CDATA[
-		select no, title, contents, user_no as userNo
+		select no, title, contents, user_no as userNo, group_no as groupNo, order_No as orderNo, depth
 		from board
 		where no=#{no }
 	]]>
@@ -72,6 +72,30 @@
 		select max(no) from board
 	]]>
 	</select>
+  	
+  	<!-- update로 새 댓글은 부모의 글의 order+1 보다 크거나 같은 놈들 +1 먼저 하고 
+  		 새 댓글 insert 한다.
+  		 
+  	-->
+  	<insert id="insertRe" parameterType="boardvo">
+   	<![CDATA[
+		insert into board 
+		select null, #{title }, #{contents }, 0, now(), group_no, order_no+1, depth+1, #{userNo } 
+		from board 
+		where group_no=#{groupNo } and order_no=#{orderNo }
+	]]>
+  	</insert>
+  	
+  	<update id="updateOthers" parameterType="boardvo">
+	<![CDATA[
+		update board 
+		set order_no = order_no+1
+		where order_no >= #{orderNo }+1 and group_no=#{groupNo }
+	]]>
+	</update>
+  	
+  	
+  	
   	
   	
 </mapper>

@@ -44,4 +44,16 @@ public class BoardService {
 		
 	}
 
+	public Boolean writeReply(String no, BoardVo vo) {
+		System.out.println(vo);
+		BoardVo parent = boardDao.get(Long.parseLong(no));
+		vo.setGroupNo(parent.getGroupNo());
+		vo.setOrderNo(parent.getOrderNo());
+		vo.setDepth(parent.getDepth());
+		System.out.println(parent);
+		boardDao.updateOthers(vo);
+		return boardDao.insertRe(vo);
+		
+	}
+
 }

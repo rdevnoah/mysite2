@@ -15,6 +15,13 @@ public class BoardVo {
 	
 	public BoardVo() {}
 	
+	public BoardVo(String title, String contents, int groupNo, int orderNo, Long userNo ) {
+		this.title = title;
+		this.contents = contents;
+		this.groupNo = groupNo;
+		this.orderNo = orderNo;
+		this.userNo = userNo;
+	}
 	
 	
 	public BoardVo(String title, String contents, Long userNo) {
