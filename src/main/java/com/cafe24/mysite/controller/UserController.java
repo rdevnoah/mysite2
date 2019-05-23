@@ -1,7 +1,5 @@
 package com.cafe24.mysite.controller;
 
-import java.util.List;
-
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
@@ -9,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -33,12 +30,11 @@ public class UserController {
 
 	@RequestMapping(value = "/join", method = RequestMethod.POST)
 	public String join(@Valid @ModelAttribute UserVo vo, BindingResult result, Model model) {
-		
 		if (result.hasErrors()) {
-			List<ObjectError> list = result.getAllErrors();
-			for (ObjectError error : list) {
-				System.out.println(error);
-			}
+			/*  // 에러 메세지 확인
+			 * List<ObjectError> list = result.getAllErrors(); for (ObjectError error :
+			 * list) { System.out.println(error); }
+			 */
 			model.addAllAttributes(result.getModel());
 			return "user/join";
 		}
@@ -58,20 +54,16 @@ public class UserController {
 
 	@Auth
 	@RequestMapping(value = "/update", method = RequestMethod.GET)
-	public String update(HttpSession session, @AuthUser UserVo authUser, Model model) {
-
+	public String update(@AuthUser UserVo authUser, Model model) {
 		UserVo userVo = userService.getUser(authUser.getNo());
 		model.addAttribute("userVo", userVo);
 		return "/user/update";
 	}
 
+	@Auth
 	@RequestMapping(value = "/update", method = RequestMethod.POST)
 	public String update(HttpSession session, @ModelAttribute UserVo vo) {
 
-		if (session == null) {
-			return "/";
-		}
-		
 		if (vo == null) {
 			return "/user/login"; // 보내고 나면 무조건 코드를 끝을 내줘야 한다. 아니면 밑으로 내려가서 밑의 코드가 수행된다.
 		}

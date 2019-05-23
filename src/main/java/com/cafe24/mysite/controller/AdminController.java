@@ -3,7 +3,10 @@ package com.cafe24.mysite.controller;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-//@Auth(role = Role.ADMIN)
+import com.cafe24.security.Auth;
+import com.cafe24.security.Auth.Role;
+
+@Auth(role = Role.ADMIN)
 @Controller
 @RequestMapping("/admin")
 public class AdminController {

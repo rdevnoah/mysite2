@@ -21,6 +21,10 @@ public class UserVo {
 	
 	private String gender;
 	private String joinDate;
+	
+	private String role;
+	
+	
 
 	public UserVo() {}
 	public UserVo(String email, String password) {
@@ -28,6 +32,13 @@ public class UserVo {
 		this.password = password;
 	}
 
+	
+	public String getRole() {
+		return role;
+	}
+	public void setRole(String role) {
+		this.role = role;
+	}
 	public Long getNo() {
 		return no;
 	}

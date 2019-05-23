@@ -1,7 +1,5 @@
 package com.cafe24.mysite.controller;
 
-import javax.servlet.http.HttpSession;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.cafe24.mysite.service.BoardService;
 import com.cafe24.mysite.vo.BoardListVo;
 import com.cafe24.mysite.vo.BoardVo;
-import com.cafe24.mysite.vo.UserVo;
 import com.cafe24.security.Auth;
 
 @Controller
@@ -30,52 +27,40 @@ public class BoardController {
 		
 		BoardListVo pageList = boardService.getPageListByPageNum(nowPage, kwd);
 		model.addAttribute("pageList", pageList);
-		
 
 		return "board/list";
 	}
+	
+	@Auth
 	@RequestMapping("/modify")
-	public String modify(@RequestParam(value = "no", required = true, defaultValue = "") String no, HttpSession session,
-			Model model) {
-		UserVo authUser = (UserVo) session.getAttribute("authUser");
-		if (authUser == null || session == null) {
-			return "redirect:/user/login";
-		}
-		if ("".equals(no)) {
-			return "redirect:/user/login";
-		}
+	public String modify(@RequestParam(value = "no", required = true, defaultValue = "") String no, Model model) {
+	
 		BoardVo vo = boardService.getViewByNo(no);
 		model.addAttribute("boardVo", vo);
 
 		return "board/modify";
 	}
 
+	@Auth
 	@RequestMapping("/reply")
-	public String reply(@RequestParam(value = "no", required = true, defaultValue = "") String no, Model model,
-			HttpSession session) {
-		UserVo authUser = (UserVo) session.getAttribute("authUser");
-		if (authUser == null || session == null) {
-			return "redirect:/user/login";
-		}
+	public String reply(@RequestParam(value = "no", required = true, defaultValue = "") String no, Model model) {
+
 		model.addAttribute("no", no);
 		return "board/write";
 	}
 
-//	@RequestMapping(value = "/reply", method = RequestMethod.POST)
-//	public String reply(String no, HttpSession session, @ModelAttribute BoardVo vo) {
-//		System.out.println("----------" + no + "---------" + vo);
-//		return "redirect:/board";
-//	}
-
+	@Auth
 	@RequestMapping(value = "/modify", method = RequestMethod.POST)
 	public String modofy(@ModelAttribute BoardVo vo) {
-
+		
 		boardService.updateBoard(vo);
 		return "redirect:/board";
 	}
 
+	@Auth
 	@RequestMapping("/detail")
 	public String detail(@RequestParam(value = "no", required = true, defaultValue = "") String no, Model model) {
+		
 		BoardVo vo = boardService.getViewByNo(no);
 		System.out.println(vo.getUserNo());
 		model.addAttribute("board", vo);
@@ -84,12 +69,8 @@ public class BoardController {
 
 	@Auth
 	@RequestMapping("/write")
-	public String write(HttpSession session) {
-		UserVo authUser = (UserVo) session.getAttribute("authUser");
-		if (authUser == null || session == null) {
-			return "redirect:/user/login";
-		}
-
+	public String write() {
+		
 		return "board/write";
 	}
 
@@ -97,14 +78,8 @@ public class BoardController {
 	@RequestMapping(value = "/write", method = RequestMethod.POST)
 	public String write(@RequestParam(value = "authNo", required = true, defaultValue = "") String authNo,
 			@RequestParam(value = "no", required = true, defaultValue = "") String no,
-			@ModelAttribute BoardVo vo, HttpSession session) {
-		if ("".equals(authNo)) {
-			return "user/login";
-		}
-		UserVo authUser = (UserVo) session.getAttribute("authUser");
-		if (authUser == null || session == null) {
-			return "redirect:/user/login";
-		}
+			@ModelAttribute BoardVo vo) {
+		
 		if ("".equals(no)) {
 			vo.setUserNo(Long.parseLong(authNo));
 			boardService.writeByAuthUser(vo);
@@ -117,22 +92,10 @@ public class BoardController {
 	}
 
 	
-	
-	
-	
+	@Auth
 	@RequestMapping("/delete")
-	public String delete(@RequestParam(value = "no", required = true, defaultValue = "") String no,
-			HttpSession session) {
-		UserVo authUser = (UserVo) session.getAttribute("authUser");
-		System.out.println(no);
-		if (authUser == null || session == null) {
-			return "redirect:/user/login";
-		}
-		if ("".equals(no)) {
-			return "user/login";
-		}
+	public String delete(@RequestParam(value = "no", required = true, defaultValue = "") String no) {
 		boardService.delete(Long.parseLong(no));
-
 		return "redirect:/board";
 	}
 }
