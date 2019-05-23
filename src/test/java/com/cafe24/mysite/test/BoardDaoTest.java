@@ -29,7 +29,7 @@ public class BoardDaoTest {
 	@Test // DAO : 단순 add test
 	public void test01() {
 		boardDao.deleteAll();
-		assertThat(boardDao.getCount(),is(0));
+		assertThat(boardDao.getCount(""),is(0));
 		BoardVo vo = new BoardVo();
 		vo.setTitle("저녁?");
 		vo.setContents("오늘 저녁 뭐 드실래요?");
@@ -39,22 +39,22 @@ public class BoardDaoTest {
 		vo.setDepth(0);
 		vo.setUserNo(2L);
 		assertThat(boardDao.insert(vo),is(true));
-		assertThat(boardDao.getCount(),is(1));
+		assertThat(boardDao.getCount(""),is(1));
 
 	}
 	
 	@Test // DAO : delete one board test
 	public void test02() {
 		boardDao.deleteAll();
-		assertThat(boardDao.getCount(),is(0));
+		assertThat(boardDao.getCount(""),is(0));
 		BoardVo vo1 = new BoardVo("1", "1234", 2L);
 		
 		assertThat(boardDao.insert(vo1), is(true));
-		int count = boardDao.getCount();
+		int count = boardDao.getCount("");
 		assertThat(count, is(1));
 		long no = boardDao.getNew();
 		assertThat(boardDao.delete(no), is(true));
-		count = boardDao.getCount();
+		count = boardDao.getCount("");
 		assertThat(count, is(0));
 		//test02();
 	}
@@ -62,7 +62,7 @@ public class BoardDaoTest {
 	@Test // DAO : getPageListTest
 	public void test03() {
 		boardDao.deleteAll();
-		assertThat(boardDao.getCount(),is(0));
+		assertThat(boardDao.getCount(""),is(0));
 		BoardVo vo1 = new BoardVo("1", "1234", 2L);
 		BoardVo vo2 = new BoardVo("2", "1234", 2L);
 		BoardVo vo3 = new BoardVo("3", "1234", 2L);
@@ -74,7 +74,7 @@ public class BoardDaoTest {
 		assertThat(boardDao.insert(vo3), is(true));
 		assertThat(boardDao.insert(vo4), is(true));
 		assertThat(boardDao.insert(vo5), is(true));
-		int count = boardDao.getCount();
+		int count = boardDao.getCount("");
 		assertThat(count, is(5));
 		
 		PagingBean pb = new PagingBean(count, 1);
@@ -148,7 +148,7 @@ public class BoardDaoTest {
 		boardDao.insertRe(vo12);
 		boardDao.updateOthers(vo13);
 		boardDao.insertRe(vo13);
-		assertThat(boardDao.getCount(), is(18));
+		assertThat(boardDao.getCount(""), is(18));
 		
 		
 	}

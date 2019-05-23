@@ -14,17 +14,20 @@ public class BoardService {
 	@Autowired
 	private BoardDao boardDao;
 
-	public int getCount() {
-		return boardDao.getCount();
+	public int getCount(String keyword) {
+		return boardDao.getCount(keyword);
 	}
 
-	public BoardListVo getPageListByPageNum(String nowPage) {
+	
+	
+	public BoardListVo getPageListByPageNum(String nowPage, String keyword) {
 		BoardListVo listVo = new BoardListVo();
-		listVo.setPb(new PagingBean(getCount(), Integer.parseInt(nowPage)));
+		listVo.setPb(new PagingBean(getCount(keyword), Integer.parseInt(nowPage)));
+		listVo.getPb().setKeyword(keyword);
 		listVo.setList(boardDao.getList(listVo.getPb()));
 		return listVo;
 	}
-
+	
 	public BoardVo getViewByNo(String no) {
 		return boardDao.get(Long.parseLong(no));
 	}

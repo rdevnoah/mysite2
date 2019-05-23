@@ -23,17 +23,17 @@ public class BoardController {
 	@Autowired
 	private BoardService boardService;
 
-	@RequestMapping("")
+	@RequestMapping(value= {"/search",""}, method= {RequestMethod.POST, RequestMethod.GET})
 	public String list(Model model,
-			@RequestParam(value = "nowPage", required = true, defaultValue = "1") String nowPage) {
-
-		System.out.println("nowPage : " + nowPage);
-		BoardListVo pageList = boardService.getPageListByPageNum(nowPage);
+			@RequestParam(value = "nowPage", required = true, defaultValue = "1") String nowPage,
+			@RequestParam(value = "kwd", required = true, defaultValue = "") String kwd) {
+		
+		BoardListVo pageList = boardService.getPageListByPageNum(nowPage, kwd);
 		model.addAttribute("pageList", pageList);
+		
 
 		return "board/list";
 	}
-
 	@RequestMapping("/modify")
 	public String modify(@RequestParam(value = "no", required = true, defaultValue = "") String no, HttpSession session,
 			Model model) {
@@ -116,6 +116,10 @@ public class BoardController {
 		return "redirect:/board";
 	}
 
+	
+	
+	
+	
 	@RequestMapping("/delete")
 	public String delete(@RequestParam(value = "no", required = true, defaultValue = "") String no,
 			HttpSession session) {

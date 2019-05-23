@@ -2,16 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="board">
-	<select id="pageList" parameterType="pagingBean" resultType="boardvo">
-	<![CDATA[
-		select b.no, b.title, u.name, date_format(b.reg_date, '%Y-%m-%d %h:%i:%s') as regDate, 
-		b.hit, b.group_no as groupNo, b.order_no as orderNo, b.depth, b.user_no as userNo
-		from board b, user u
-		where b.user_no=u.no 
-		order by b.group_no desc, b.no asc limit #{startRowNumber }, #{postCountPerPage }
-	]]>
 	
-	</select>
 	<select id="getDetail" parameterType="long" resultType="boardvo">
 	<![CDATA[
 		select no, title, contents, user_no as userNo, group_no as groupNo, order_No as orderNo, depth
@@ -19,10 +10,15 @@
 		where no=#{no }
 	]]>
 	</select>	
-	<select id="count" resultType="int">
+	<select id="count" parameterType="string" resultType="int">
 	<![CDATA[
 		select count(*) from board
 	]]>
+	<if test="_parameter != ''">
+	<![CDATA[	
+		where title like CONCAT('%',#{keyword },'%') or contents like CONCAT('%',#{keyword },'%')
+	]]>
+	</if>
 	</select>
 
 	<select id="list" resultType="boardvo">
@@ -93,8 +89,24 @@
 		where order_no >= #{orderNo }+1 and group_no=#{groupNo }
 	]]>
 	</update>
-  	
-  	
+	
+	
+  	<select id="pageList" parameterType="pagingBean" resultType="boardvo">
+	<![CDATA[
+		select b.no, b.title, u.name, date_format(b.reg_date, '%Y-%m-%d %h:%i:%s') as regDate, 
+		b.hit, b.group_no as groupNo, b.order_no as orderNo, b.depth, b.user_no as userNo
+		from board b, user u
+		where b.user_no=u.no
+	]]>
+		<if test="keyword != ''">    
+	  		<![CDATA[
+		 		and (b.title like CONCAT('%',#{keyword },'%') or b.contents like CONCAT('%',#{keyword},'%'))]]> 
+  		</if>	
+	<![CDATA[	
+		order by b.group_no desc, b.no asc limit #{startRowNumber }, #{postCountPerPage }
+	]]>
+	
+	</select>
   	
   	
   	

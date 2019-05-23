@@ -32,8 +32,8 @@ public class BoardDao {
 		return sqlSession.delete("board.deleteAll") == 1;
 	}
 	
-	public int getCount() {
-		return sqlSession.selectOne("board.count");
+	public int getCount(String keyword) {
+		return sqlSession.selectOne("board.count", keyword);
 	}
 	
 	public List<BoardVo> getList(PagingBean pb){

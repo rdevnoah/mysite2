@@ -31,6 +31,19 @@ public class PagingBean {
 	 * database에 저장된 총게시물수
 	 */
 	private int totalPostCount;
+	
+	/**
+	 * 검색할 때 쓰는 키워드. 없으면 초기화 안해줘도 된다.
+	 */
+	private String keyword;
+	
+	public String getKeyword() {
+		return keyword;
+	}
+
+	public void setKeyword(String keyword) {
+		this.keyword = keyword;
+	}
 
 	public PagingBean() {
 	}

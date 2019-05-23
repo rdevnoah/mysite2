@@ -15,7 +15,7 @@ public class UserVo {
 	@NotEmpty
 	private String email;
 	
-	
+	@NotEmpty
 	private String password;
 	private String gender;
 	private String joinDate;
