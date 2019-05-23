@@ -37,10 +37,10 @@
 					<a href="${pageContext.servletContext.contextPath }/board">글목록</a>
 					<c:choose>
 						<c:when test="${board.userNo == authUser.no}">
-							<a href="${pageContext.servletContext.contextPath }/board/modify?no=${board.no }">글수정</a>
+							<a href="${pageContext.servletContext.contextPath }/board/modify?no=${board.no }&userNo=${board.userNo }">글수정</a>
 						</c:when>
 						<c:otherwise>
-							<a href="${pageContext.servletContext.contextPath }/board/reply?no=${board.no }">답글달기</a>
+							<a href="${pageContext.servletContext.contextPath }/board/reply?no=${board.no }&userNo=${board.userNo }">답글달기</a>
 						</c:otherwise>
 					</c:choose>
 				
