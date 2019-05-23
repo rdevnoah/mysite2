@@ -43,6 +43,8 @@ public class AuthInterceptor extends HandlerInterceptorAdapter {
 			response.sendRedirect(request.getContextPath() + "/user/login");
 			return false;
 		}
+		
+		String boardNo = request.getParameter("no");
 
 		// 7. Role 가져오기
 		Auth.Role role = auth.role();

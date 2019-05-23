@@ -11,7 +11,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.cafe24.mysite.service.BoardService;
 import com.cafe24.mysite.vo.BoardListVo;
 import com.cafe24.mysite.vo.BoardVo;
+import com.cafe24.mysite.vo.UserVo;
 import com.cafe24.security.Auth;
+import com.cafe24.security.AuthUser;
 
 @Controller
 @RequestMapping("/board")
@@ -33,8 +35,9 @@ public class BoardController {
 	
 	@Auth
 	@RequestMapping("/modify")
-	public String modify(@RequestParam(value = "no", required = true, defaultValue = "") String no, Model model) {
-	
+	public String modify(@RequestParam(value = "no", required = true, defaultValue = "") String no, 
+			@AuthUser UserVo authUser, Model model) {
+		
 		BoardVo vo = boardService.getViewByNo(no);
 		model.addAttribute("boardVo", vo);
 
