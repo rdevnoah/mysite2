@@ -15,6 +15,15 @@
 
 <script>
 
+function checkEmail(){
+	var $check = $('#check-email').val();
+	if ($check == 'true'){
+		return true;
+	}
+	alert("아이디 중복검사 안했습니다. 하세요.");
+	return false;
+}
+
 	$(function(){
 		$('#email').change(function(){
 			$('#check-button').show();
@@ -46,6 +55,7 @@
 						$('#email').val("");
 						return;
 					}
+						$('#check-email').val("true");
 						$('#check-button').hide();
 						$('#check-image').show();
 						
@@ -65,7 +75,8 @@
 		<jsp:include page="/WEB-INF/views/includes/header.jsp"/>
 		<div id="content">
 			<div id="user">
-				<form:form modelAttribute="userVo" id="join-form" name="joinForm" method="post" action="${pageContext.servletContext.contextPath }/user/join">
+				<form:form modelAttribute="userVo" id="join-form" name="joinForm" method="post" 
+				action="${pageContext.servletContext.contextPath }/user/join" onsubmit="return checkEmail()">
 					<label class="block-label" for="name">이름</label>
 					<input id="name" name="name" type="text" value="">
 					
@@ -86,8 +97,12 @@
 					<p style="font-weight: bold; color:red; text-align: left; padding: 0;">
 						<form:errors path="email"/>
 					</p>
+					<input type="hidden" id="check-email" value="false">
 					<label class="block-label">패스워드</label>
 					<form:password path="password" />
+					<p style="font-weight: bold; color:red; text-align: left; padding: 0;">
+						<form:errors path="password"/>
+					</p>
 					<fieldset>
 						<legend>성별</legend>
 						<label>여</label> <form:radiobutton path="gender" value="female" checked="checked" />
