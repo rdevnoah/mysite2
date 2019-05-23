@@ -5,7 +5,7 @@
 	<select id="pageList" parameterType="pagingBean" resultType="boardvo">
 	<![CDATA[
 		select b.no, b.title, u.name, date_format(b.reg_date, '%Y-%m-%d %h:%i:%s') as regDate, 
-		b.hit, b.group_no as groupNo, b.order_no as orderNo, b.depth
+		b.hit, b.group_no as groupNo, b.order_no as orderNo, b.depth, b.user_no as userNo
 		from board b, user u
 		where b.user_no=u.no 
 		order by b.group_no desc, b.no asc limit #{startRowNumber }, #{postCountPerPage }
@@ -14,7 +14,7 @@
 	</select>
 	<select id="getDetail" parameterType="long" resultType="boardvo">
 	<![CDATA[
-		select no, title, contents 
+		select no, title, contents, user_no as userNo
 		from board
 		where no=#{no }
 	]]>
@@ -38,6 +38,14 @@
 	]]>
 	</select>
 
+
+	<update id="update" parameterType="boardvo">
+	<![CDATA[
+		update board set title = #{title }, contents = #{contents } where no=#{no }
+	]]>
+	</update>
+
+
   	<insert id="insert" parameterType="boardvo">
    	<![CDATA[
 		insert into board 
@@ -46,9 +54,9 @@
   	</insert>
   	
   	<!-- 글의 userNo와  -->
-  	<delete id="delete" parameterType="boardvo"> 
+  	<delete id="delete" parameterType="long"> 
   	<![CDATA[
-		delete from board where no=#{no }
+		delete from board where no=#{boardNo }
 	]]>
   	</delete>
   	
@@ -57,4 +65,13 @@
 		delete from board
 	]]>
   	</delete>
+  	
+  	
+  	<select id="getNew" resultType="long">
+	<![CDATA[
+		select max(no) from board
+	]]>
+	</select>
+  	
+  	
 </mapper>

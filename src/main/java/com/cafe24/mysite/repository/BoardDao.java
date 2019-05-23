@@ -24,8 +24,8 @@ public class BoardDao {
 	}
 	
 
-	public Boolean delete(BoardVo vo) {
-		return sqlSession.delete("board.delete", vo)==1;
+	public Boolean delete(Long no) {
+		return sqlSession.delete("board.delete", no)==1;
 	}
 	
 	public Boolean deleteAll() {
@@ -42,5 +42,13 @@ public class BoardDao {
 
 	public BoardVo get(Long no) {
 		return sqlSession.selectOne("board.getDetail", no);
+	}
+	
+	public long getNew() {
+		return sqlSession.selectOne("board.getNew");
+	}
+
+	public int update(BoardVo vo) {
+		return sqlSession.update("board.update", vo);
 	}
 }

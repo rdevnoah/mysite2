@@ -48,7 +48,6 @@
 					</fieldset>
 					<input type="hidden" name="no" value='${userVo.no }'>
 					<input type="submit" value="수정하기">
-					
 				</form>
 			</div>
 		</div>

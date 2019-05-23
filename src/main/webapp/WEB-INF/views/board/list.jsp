@@ -34,14 +34,25 @@
 							<td>${board.no}</td>
 							<td style='text-align: left; padding-left:${20*board.depth }px'>
 								<c:if test="${board.depth != 0 }">
-									<img
-										src="${pageContext.servletContext.contextPath }/assets/images/reply.png">
-								</c:if> <a href="${pageContext.servletContext.contextPath }/board/detail?no=${board.no }">${board.title }</a>
+									<img src="${pageContext.servletContext.contextPath }/assets/images/reply.png">
+								</c:if> 
+								<c:choose>
+									<c:when test="${empty authUser }">
+										${board.title }
+									</c:when>
+									<c:otherwise>
+										<a href="${pageContext.servletContext.contextPath }/board/detail?no=${board.no }">${board.title }</a>							
+									</c:otherwise>
+								</c:choose>
 							</td>
 							<td>${board.name}</td>
 							<td>${board.hit}</td>
 							<td>${board.regDate}</td>
-							<td><a href="" class="del">삭제</a></td>
+							<td>
+								<c:if test="${authUser.no == board.userNo }">
+									<a href="${pageContext.servletContext.contextPath }/board/delete?no=${board.no }" class="del">삭제</a>
+								</c:if>
+							</td>
 						</tr>
 					</c:forEach>
 				</table>

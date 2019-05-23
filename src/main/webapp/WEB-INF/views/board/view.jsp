@@ -32,9 +32,18 @@
 						</td>
 					</tr>
 				</table>
-				<div class="bottom">
+				<div class="bottom"> <!-- board.userNo와 session의 userNo가 같으면 글수정 아니면 답글달기 -->
+				
 					<a href="${pageContext.servletContext.contextPath }/board">글목록</a>
-					<a href="${pageContext.servletContext.contextPath }/board/modify">글수정</a>
+					<c:choose>
+						<c:when test="${board.userNo == authUser.no}">
+							<a href="${pageContext.servletContext.contextPath }/board/modify?no=${board.no }">글수정</a>
+						</c:when>
+						<c:otherwise>
+							<a href="${pageContext.servletContext.contextPath }/board/reply?no=${board.no }">답글달기</a>
+						</c:otherwise>
+					</c:choose>
+				
 				</div>
 			</div>
 		</div>

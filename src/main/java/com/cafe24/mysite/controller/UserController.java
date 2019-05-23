@@ -13,10 +13,11 @@ import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import com.cafe24.mysite.service.UserService;
 import com.cafe24.mysite.vo.UserVo;
+import com.cafe24.security.Auth;
+import com.cafe24.security.AuthUser;
 
 @Controller
 @RequestMapping("/user")
@@ -55,45 +56,9 @@ public class UserController {
 		return "user/login";
 	}
 
-	@RequestMapping(value = "/login", method = RequestMethod.POST)
-	public String login(@RequestParam(value = "email", required = true, defaultValue = "") String email,
-			@RequestParam(value = "password", required = true, defaultValue = "") String password, HttpSession session,
-			Model model) {
-
-		UserVo authUser = userService.getUser(new UserVo(email, password));
-
-		if (authUser == null) {
-			model.addAttribute("result", "fail");
-			return "user/login";
-		}
-		session.setAttribute("authUser", authUser);
-		// session 처리
-
-		return "redirect:/";
-	}
-
-	@RequestMapping("/logout")
-	public String logout(HttpSession session) {
-		UserVo authUser = (UserVo)session.getAttribute("authUser");
-		if (authUser == null || session == null) {
-			return "user/login";
-		}
-		session.removeAttribute("authUser");
-		session.invalidate();
-		return "redirect:/";
-	}
-
+	@Auth
 	@RequestMapping(value = "/update", method = RequestMethod.GET)
-	public String update(HttpSession session, Model model) {
-		if (session == null) {
-			return "redirect:/";
-		}
-
-		UserVo authUser = (UserVo) session.getAttribute("authUser");
-
-		if (authUser == null) {
-			return "redirect:/";
-		}
+	public String update(HttpSession session, @AuthUser UserVo authUser, Model model) {
 
 		UserVo userVo = userService.getUser(authUser.getNo());
 		model.addAttribute("userVo", userVo);
@@ -101,14 +66,13 @@ public class UserController {
 	}
 
 	@RequestMapping(value = "/update", method = RequestMethod.POST)
-	public String update(HttpSession session, @ModelAttribute UserVo vo, Model model) {
+	public String update(HttpSession session, @ModelAttribute UserVo vo) {
 
 		if (session == null) {
 			return "/";
 		}
 		
 		if (vo == null) {
-			model.addAttribute("result", "fail");
 			return "/user/login"; // 보내고 나면 무조건 코드를 끝을 내줘야 한다. 아니면 밑으로 내려가서 밑의 코드가 수행된다.
 		}
 		

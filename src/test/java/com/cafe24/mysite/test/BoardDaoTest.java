@@ -1,6 +1,7 @@
 package com.cafe24.mysite.test;
 
-import static org.hamcrest.CoreMatchers.*;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.not;
 import static org.junit.Assert.assertThat;
 
 import java.util.List;
@@ -41,10 +42,26 @@ public class BoardDaoTest {
 		assertThat(boardDao.getCount(),is(1));
 
 	}
+	
+	@Test // DAO : delete one board test
+	public void test02() {
+		boardDao.deleteAll();
+		assertThat(boardDao.getCount(),is(0));
+		BoardVo vo1 = new BoardVo("1", "1234", 2L);
+		
+		assertThat(boardDao.insert(vo1), is(true));
+		int count = boardDao.getCount();
+		assertThat(count, is(1));
+		long no = boardDao.getNew();
+		assertThat(boardDao.delete(no), is(true));
+		count = boardDao.getCount();
+		assertThat(count, is(0));
+		//test02();
+	}
 
 	@Test // DAO : getPageListTest
-	public void test02() {
-		assertThat(boardDao.deleteAll(), is(true));
+	public void test03() {
+		boardDao.deleteAll();
 		assertThat(boardDao.getCount(),is(0));
 		BoardVo vo1 = new BoardVo("1", "1234", 2L);
 		BoardVo vo2 = new BoardVo("2", "1234", 2L);
@@ -72,10 +89,23 @@ public class BoardDaoTest {
 		assertThat(checkContain(list, vo5), is(true));
 		assertThat(checkContain(list, new BoardVo()), is(not(true)));
 	}
-
 	
+	
+	@Test // DAO : update test
+	public void test04() {
+		long no = boardDao.getNew();
+		BoardVo updateVo = new BoardVo();
+		String title = "으히히히";
+		String contents = "으헤헤헤";
+		updateVo.setTitle(title);
+		updateVo.setContents(contents);
+		updateVo.setNo(no);
+		boardDao.update(updateVo);
+		assertThat(boardDao.get(no).getTitle(), is(updateVo.getTitle()));
+	}
 	
 	public boolean checkContain(List<BoardVo> dbList, BoardVo vo) {
+		
 		for (BoardVo db : dbList) {
 			if (db.getTitle().equals(vo.getTitle())){
 				return true;

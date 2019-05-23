@@ -34,4 +34,14 @@ public class BoardService {
 		
 	}
 
+	public boolean delete(long boardNo) {
+		return boardDao.delete(boardNo);
+		
+	}
+
+	public int updateBoard(BoardVo vo) {
+		return boardDao.update(vo);
+		
+	}
+
 }

@@ -1,7 +1,6 @@
 package com.cafe24.mysite.controller;
 
 import javax.servlet.http.HttpSession;
-import javax.swing.text.html.FormSubmitEvent.MethodType;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -15,6 +14,9 @@ import com.cafe24.mysite.service.BoardService;
 import com.cafe24.mysite.vo.BoardListVo;
 import com.cafe24.mysite.vo.BoardVo;
 import com.cafe24.mysite.vo.UserVo;
+import com.cafe24.security.Auth;
+
+
 
 @Controller
 @RequestMapping("/board")
@@ -33,30 +35,77 @@ public class BoardController {
 		return "board/list";
 	}
 	
+	@RequestMapping("/modify")
+	public String modify(@RequestParam(value="no", required = true, defaultValue = "") String no,
+			HttpSession session, Model model){
+		UserVo authUser = (UserVo)session.getAttribute("authUser");
+		if (authUser == null || session == null) {
+			return "redirect:/user/login";
+		}
+		if ("".equals(no)) {
+			return "redirect:/user/login";
+		}
+		BoardVo vo = boardService.getViewByNo(no);
+		model.addAttribute("boardVo",vo);
+		
+		return "board/modify";
+	}
+	
+	@RequestMapping(value = "/modify", method = RequestMethod.POST)
+	public String modofy(@ModelAttribute BoardVo vo){
+		
+		boardService.updateBoard(vo);
+		return "redirect:/board";
+	}
+	
 	@RequestMapping("/detail")
 	public String detail(@RequestParam(value="no", required = true, defaultValue = "")String no, Model model) {
 		BoardVo vo = boardService.getViewByNo(no);
+		System.out.println(vo.getUserNo());
 		model.addAttribute("board", vo);
 		return "board/view";
 	}
 	
+	@Auth
 	@RequestMapping("/write")
 	public String write(HttpSession session) {
 		UserVo authUser = (UserVo)session.getAttribute("authUser");
 		if (authUser == null || session == null) {
-			return "user/login";
+			return "redirect:/user/login";
 		}
+		
 		return "board/write";
 	}
 	
+	@Auth
 	@RequestMapping(value="/write", method = RequestMethod.POST)
 	public String write(@RequestParam(value="authNo", required=true, defaultValue = "")String authNo,
-			@ModelAttribute BoardVo vo) {
+			@ModelAttribute BoardVo vo, HttpSession session) {
 		if ("".equals(authNo)) {
 			return "user/login";
 		}
-		vo.setNo(Long.parseLong(authNo));
+		UserVo authUser = (UserVo)session.getAttribute("authUser");
+		if (authUser == null || session == null) {
+			return "redirect:/user/login";
+		}
+		vo.setUserNo(Long.parseLong(authNo));
 		boardService.writeByAuthUser(vo);
+		return "redirect:/board";
+	}
+	
+	@RequestMapping("/delete")
+	public String delete(@RequestParam(value="no", required = true, defaultValue = "")String no, 
+			HttpSession session){
+		UserVo authUser = (UserVo)session.getAttribute("authUser");
+		System.out.println(no);
+		if (authUser == null || session == null) {
+			return "redirect:/user/login";
+		}	
+		if ("".equals(no)) {
+			return "user/login";
+		}
+		boardService.delete(Long.parseLong(no));
+		
 		return "redirect:/board";
 	}
 }
