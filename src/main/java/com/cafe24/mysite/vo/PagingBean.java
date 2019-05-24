@@ -11,7 +11,7 @@ package com.cafe24.mysite.vo;
  * isPreviousPageGroup()<br>
  * isNextPageGroup()
  * 
- * @author rdevnoah
+ * @author rdevnoah a.k.a 김영호
  *
  */
 public class PagingBean {
@@ -172,7 +172,15 @@ public class PagingBean {
 		}
 		return flag;
 	}
-
+	
+	
+	
+	/**
+	 * 
+	 * @param args
+	 * 
+	 * 테스트.
+	 */
 	public static void main(String args[]) {
 		PagingBean p = new PagingBean(47, 10);
 		// PagingBean p = new PagingBean(1, 1);
