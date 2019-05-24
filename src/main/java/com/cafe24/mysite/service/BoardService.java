@@ -14,6 +14,7 @@ public class BoardService {
 	@Autowired
 	private BoardDao boardDao;
 
+	
 	public int getCount(String keyword) {
 		return boardDao.getCount(keyword);
 	}
