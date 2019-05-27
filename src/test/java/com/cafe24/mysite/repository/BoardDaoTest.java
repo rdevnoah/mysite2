@@ -1,4 +1,4 @@
-package com.cafe24.mysite.test;
+package com.cafe24.mysite.repository;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
