@@ -38,7 +38,7 @@
 						<groupId>org.codehaus.mojo</groupId>
 						<artifactId>tomcat-maven-plugin</artifactId>
 						<configuration>
-							<url>http://127.0.0.1:8080/manager/text</url>
+							<url>http://127.0.0.1:80/manager/text</url>
 							<path>/mysite2</path>
 							<username>admin</username>
 							<password>manager</password>
@@ -176,6 +176,7 @@
 			<artifactId>hamcrest-all</artifactId>
 			<version>1.3</version>
 		</dependency>
+
 		<!-- spring Test -->
 		<dependency>
 			<groupId>org.springframework</groupId>

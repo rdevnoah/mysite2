@@ -20,7 +20,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
-	//private static final Log LOGGER = LogFactory.getLog( GlobalExceptionHandler.class );
+	private static final Log LOGGER = LogFactory.getLog( GlobalExceptionHandler.class );
 	
 	@ExceptionHandler(Exception.class)
 	public void handlerException(HttpServletRequest request, HttpServletResponse response, Exception e)
@@ -30,7 +30,7 @@ public class GlobalExceptionHandler {
 		e.printStackTrace();
 		StringWriter errors = new StringWriter();
 		e.printStackTrace(new PrintWriter(errors));
-		//LOGGER.error(errors.toString());
+		LOGGER.error(errors.toString());
 		System.out.println(errors.toString());
 
 		String accept = request.getHeader("accept");
