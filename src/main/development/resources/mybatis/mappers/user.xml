@@ -6,39 +6,39 @@
 
 	<insert id="insert" parameterType="uservo">
 	<![CDATA[
-		insert into user (no, name, email, password, gender, join_date)
-		values(null, #{name }, #{email }, #{password }, #{gender }, now())
+		insert into member (no, name, email, password, gender, join_date)
+		values(default, #{name }, #{email }, #{password }, #{gender }, now())
 	]]>
 	<selectKey keyProperty="no" resultType="long" order="AFTER">
-		select last_insert_id()
+		select currval('member_no_seq')
 	</selectKey>
   	</insert>
   	
   	<select id="getByEmailAndPassword" parameterType="uservo" resultType="uservo">
   	<![CDATA[
   		select no, name, role 
-  		from user 
+  		from member 
   		where email=#{email } and password=#{password }
   	]]>
   	</select>
   	
   	<select id="getByNo" parameterType="long" resultType="uservo">
   	<![CDATA[
-  		select no, name, email, gender from user where no=#{no }
+  		select no, name, email, gender from member where no=#{no }
   	]]>	
   	</select>
   	
   	<select id="getByEmail" parameterType="string" resultType="uservo">
   	<![CDATA[
   		select no, name, email, gender
-  		from user 
+  		from member 
   		where email = #{email }
   	]]>
   	</select>
   	
   	<update id="update" parameterType="uservo">
   	<![CDATA[
-  		update user 
+  		update member 
   		set name=#{name },
   	]]> 
   	<!-- password가 있으면 패스워드 바꿔주고 그냥 빈칸으로 입력하면 안넣어주는 것. 

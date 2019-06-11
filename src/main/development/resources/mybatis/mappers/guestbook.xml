@@ -4,7 +4,7 @@
 <mapper namespace="guestbook">
 	<select id="list" resultType="guestbookvo">
 	<![CDATA[
-		select no, name, contents, date_format(reg_date, '%Y-%m-%d %h:%i:%s') as regDate
+		select no, name, contents, to_char(reg_date, 'YYYY-MM-DD HH24:MI:SS.MS') as regDate
 		from guestbook 
 		order by reg_date desc
 	]]>
@@ -12,7 +12,7 @@
 	
 	<insert id="insert" parameterType="guestbookvo">
    	<![CDATA[
-		insert into guestbook values(null, #{name}, #{password}, #{contents}, now())
+		insert into guestbook values(default, #{name}, #{password}, #{contents}, now())
 	]]>
   	</insert>
   	

@@ -5,7 +5,7 @@
 	
 	<select id="getDetail" parameterType="long" resultType="boardvo">
 	<![CDATA[
-		select no, title, contents, user_no as userNo, group_no as groupNo, order_No as orderNo, depth
+		select no, title, contents, member_no as userNo, group_no as groupNo, order_No as orderNo, depth
 		from board
 		where no=#{no }
 	]]>
@@ -24,10 +24,10 @@
 	<select id="list" resultType="boardvo">
 	<![CDATA[
 		select no, title, contents, hit, 
-		date_format(reg_date, '%Y-%m-%d %h:%i:%s') as regDate, 
+		to_char(reg_date, 'YYYY-MM-DD HH24:MI:SS.MS') as regDate, 
 		group_no as groupNo, order_no as orderNo,
 		depth, 
-		user_no as userNo
+		member_no as userNo
 		from board 
 		order by no desc
 		
@@ -45,7 +45,7 @@
   	<insert id="insert" parameterType="boardvo">
    	<![CDATA[
 		insert into board 
-		select null, #{title }, #{contents }, 0, now(), COALESCE(max(group_no+1), 1), 1, 0, #{userNo } from board
+		select nextval('board_no_seq'), #{title }, #{contents }, 0, now(), COALESCE(max(group_no+1), 1), 1, 0, #{userNo } from board
 	]]>
   	</insert>
   	
@@ -76,7 +76,7 @@
   	<insert id="insertRe" parameterType="boardvo">
    	<![CDATA[
 		insert into board 
-		select null, #{title }, #{contents }, 0, now(), group_no, order_no+1, depth+1, #{userNo } 
+		select default, #{title }, #{contents }, 0, now(), group_no, order_no+1, depth+1, #{userNo } 
 		from board 
 		where group_no=#{groupNo } and order_no=#{orderNo }
 	]]>
@@ -93,17 +93,17 @@
 	
   	<select id="pageList" parameterType="pagingBean" resultType="boardvo">
 	<![CDATA[
-		select b.no, b.title, u.name, date_format(b.reg_date, '%Y-%m-%d %h:%i:%s') as regDate, 
-		b.hit, b.group_no as groupNo, b.order_no as orderNo, b.depth, b.user_no as userNo
-		from board b, user u
-		where b.user_no=u.no
+		select b.no, b.title, u.name, to_char(b.reg_date, 'YYYY-MM-DD HH24:MI:SS.MS') as regDate, 
+		b.hit, b.group_no as groupNo, b.order_no as orderNo, b.depth, b.member_no as userNo
+		from board b, member u
+		where b.member_no=u.no
 	]]>
 		<if test="keyword != ''">    
 	  		<![CDATA[
 		 		and (b.title like CONCAT('%',#{keyword },'%') or b.contents like CONCAT('%',#{keyword},'%'))]]> 
   		</if>	
 	<![CDATA[	
-		order by b.group_no desc, b.no asc limit #{startRowNumber }, #{postCountPerPage }
+		order by b.group_no desc, b.no asc limit #{startRowNumber } offset #{startRowNumber }
 	]]>
 	
 	</select>

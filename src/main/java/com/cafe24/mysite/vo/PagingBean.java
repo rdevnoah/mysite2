@@ -68,7 +68,7 @@ public class PagingBean {
 	 * @return
 	 */
 	public int getStartRowNumber() {
-		return postCountPerPage * (nowPage - 1);
+		return postCountPerPage * (nowPage);
 	}
 
 	/**
