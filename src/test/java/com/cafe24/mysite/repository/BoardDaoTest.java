@@ -19,7 +19,7 @@ import com.cafe24.mysite.vo.BoardVo;
 import com.cafe24.mysite.vo.PagingBean;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "file:src/main/resources/applicationContext.xml" }) //root wac에 저장된 bean들 사용
+@ContextConfiguration(locations = { "classpath:applicationContext.xml" }) //root wac에 저장된 bean들 사용
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class BoardDaoTest {
 
